@@ -13,7 +13,6 @@ if __name__ == "__main__":
     np.random.seed(42)
 
     # Setup MLflow tracking URI and experiment name
-    mlflow.set_tracking_uri("http://127.0.0.1:5000/")
     mlflow.set_experiment("Latihan Churn Prediction")
 
     # Ambil path dari argumen atau default ke processed.csv
