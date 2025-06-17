@@ -48,15 +48,16 @@ jobs:
       - name: Get latest MLflow run_id
         working-directory: ./MLProject
         run: |
-          RUN_ID=$(ls -td my-artifacts/0/*/ | head -n 1 | cut -d'/' -f3)
+          RUN_ID=$(ls -td mlruns/0/*/ | head -n 1 | cut -d'/' -f3)
           echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
           echo "Latest run_id: $RUN_ID"
 
       - name: Upload model artifact
         uses: actions/upload-artifact@v4
+        working-directory: ./MLProject
         with:
           name: trained-model
-          path: ./MLProject/my-artifacts
+          path: ./MLProject/mlruns
 
       # - name: Build Docker image
       #   run: |
