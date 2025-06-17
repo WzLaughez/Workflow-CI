@@ -12,8 +12,6 @@ if __name__ == "__main__":
     warnings.filterwarnings("ignore")
     np.random.seed(42)
 
-    # Setup MLflow tracking URI and experiment name
-    mlflow.set_experiment("Latihan Churn Prediction")
 
     # Ambil path dari argumen atau default ke processed.csv
     file_path = sys.argv[3] if len(sys.argv) > 3 else os.path.join(os.path.dirname(os.path.abspath(__file__)), "processed.csv")
@@ -34,7 +32,7 @@ if __name__ == "__main__":
     random_state = int(sys.argv[2]) if len(sys.argv) > 2 else 42
 
     # Mulai tracking run
-    with mlflow.start_run():
+    with mlflow.start_run(nested=True):
         model = LogisticRegression(
             max_iter=max_iter,
             random_state=random_state
