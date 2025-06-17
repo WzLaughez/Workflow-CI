@@ -41,11 +41,12 @@ jobs:
       - name: Run mlflow project
         working-directory: ./MLProject
         run: |
-          mlflow run . --env-manager=local 
+          mlflow run . --env-manager=local --storage-dir ./my-artifacts
 
       
       # Get latest run_id
       - name: Get latest MLflow run_id
+        working-directory: ./MLProject
         run: |
           RUN_ID=$(ls -td mlruns/0/*/ | head -n 1 | cut -d'/' -f3)
           echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
@@ -55,12 +56,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: trained-model
-          path: ./MLProject/mlruns
+          path: ./MLProject/my-artifacts
 
       # - name: Build Docker image
       #   run: |
       #     mlflow models build-docker -m ./MLProject/mlruns/0/$RUN_ID/artifacts/model -n churn-model:latest
-      
+
       # - name: Login to Docker Hub
       #   run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
