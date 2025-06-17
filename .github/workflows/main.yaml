@@ -51,8 +51,19 @@ jobs:
           echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
           echo "Latest run_id: $RUN_ID"
 
-      # - name: Upload model artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: trained-model
-      #     path: MLProject/MLProject
+      - name: Upload model artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: trained-model
+          path: ./MLProject/mlruns
+
+      # - name: Build Docker image
+      #   run: |
+      #     mlflow models build-docker -m ./MLProject/mlruns/0/$RUN_ID/artifacts/model -n churn-model:latest
+      
+      # - name: Login to Docker Hub
+      #   run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      # - name: Push Docker image
+      #   run: docker tag churn-model:latest ${{ secrets.DOCKER_USERNAME }}/churn-model:latest && docker push ${{ secrets.DOCKER_USERNAME }}/churn-model:latest
+
