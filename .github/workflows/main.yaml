@@ -39,9 +39,9 @@ jobs:
           
       # Run as a mlflow project
       - name: Run mlflow project
-        working-directory: ./MLProject
+        # working-directory: ./MLProject
         run: |
-          mlflow run . --env-manager=local 
+          mlflow run ./MLProject --env-manager=local 
 
       
       # Get latest run_id
@@ -60,7 +60,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          mlflow models build-docker --model-uri "runs:/$RUN_ID/model" --tracking-uri ./MLProject/mlruns --name "cc" 
+          mlflow models build-docker --model-uri "runs:/$RUN_ID/model" --name "cc" 
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
