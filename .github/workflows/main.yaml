@@ -58,13 +58,22 @@ jobs:
           name: trained-model
           path: ./MLProject/mlruns
 
-      # - name: Build Docker image
-      #   run: |
-      #     mlflow models build-docker -m ./MLProject/mlruns/0/$RUN_ID/artifacts/model -n churn-model:latest
+      - name: Build Docker image
+        run: |
+          mlflow models build-docker --model-uri "runs:/$RUN_ID/model" --name "cc" 
 
-      # - name: Login to Docker Hub
-      #   run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # - name: Push Docker image
-      #   run: docker tag churn-model:latest ${{ secrets.DOCKER_USERNAME }}/churn-model:latest && docker push ${{ secrets.DOCKER_USERNAME }}/churn-model:latest
+      # Tag the Docker image
+      - name: Tag Docker Image
+        run: |
+          docker tag cc ${{ secrets.DOCKER_HUB_USERNAME }}/cc:latest
+      # Push the Docker image to Docker Hub
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/cc:latest
 
